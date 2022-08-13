@@ -1,0 +1,105 @@
+* {
+  --color-lighter-blue: #D9EDF7;
+  --color-light-blue: #0087CB;
+  --color-darker-blue: #67708F;
+  --color-blue: #063C67;
+  --color-dark-blue: #313146;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.site-container {
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  background-color: #fcfcfc;
+}
+
+.btn-primary {
+  font-weight: bold;
+  outline: none;
+  border: none;
+  /* background-color: #f0c040;
+  color: #000; */
+  background-color: var(--color-lighter-blue);
+  color: var(--color-blue);
+  box-shadow: 0.5px 0.5px 1px 0.5px #888;
+}
+.btn-primary:hover {
+  background-color: var(--color-blue);
+  color: white;
+  /* background-color: rgb(255,127,0);
+  color: black; */
+}
+
+.products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.product {
+  border: 0.5px solid #dddddd;
+  margin: 1rem;
+}
+
+.product img {
+  width: 100%;
+  max-width: 400px;
+}
+
+.product-info {
+  padding: 1rem;
+}
+
+.rating span {
+  color: #ffd700;  /*gold; should be #ffc000*/
+  text-shadow: 0 0 0.5px #888;
+}
+
+.rating .numReviews {
+  color: #c99700;
+}
+
+.img-large {
+  max-width: 100%;
+}
+
+.img-thumbnail {
+  height: 80px;
+}
+
+.small-container {
+  max-width: 600px;
+}
+
+footer {
+  background-color: #212529;
+  color: white;
+  padding: 1rem;
+}
+
+.checkout-steps > div{
+  /* border-bottom: 0.2rem solid #a0a0a0;
+  color: #a0a0a0; */
+  border-bottom: 0.2rem solid var(--color-lighter-blue);
+  color: var(--color-lighter-blue);
+}
+
+.checkout-steps > div.active {
+  /* border-bottom: 0.2rem solid gold;
+  color: gold; */
+  border-bottom: 0.2rem solid var(--color-blue);
+  color: var(--color-blue);
+  /* border-bottom: 0.2rem solid #f08000;
+  color: #f08000; */
+}
