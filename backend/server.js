@@ -52,7 +52,7 @@ const __dirname = path.resolve();
 //middleware 1 - serve all files inside frontend build folder as static files
 app.use(express.static(path.join(__dirname, '/frontend/build')));
 //add route - anything following the website or server name will be served by this .html file
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, '/frontend/build/index.html')))
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, '/frontend/build/index.html')));
 //NOTE: /frontend/build does not exist until npm run build from root folder is executed
 
 
