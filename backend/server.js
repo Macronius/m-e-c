@@ -1,7 +1,7 @@
 //express
 import express from 'express';
 //path
-import path from path;
+import path from 'path';
 //mongoose
 import mongoose from 'mongoose';
 //environmental variable
@@ -40,7 +40,7 @@ app.get('/api/keys/paypal', (req, res) => {
 
 
 //seed route
-app.use('/api/seed', seedRouter);
+app.use('/api/seed', seedRouter); //use to seed an empty cloud(only?) database with data
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
