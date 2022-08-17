@@ -47,4 +47,16 @@
      5.   create mongodb atlas database
      6.   set database connection in heroku env variables
      7.   commit and push
-    
+23.  **Sidebar**
+24.  **Searchbox**
+25.  **Search Screen**
+     1.   the useEffect is utilized to fetch data from the database upon initial screen rendering
+26.  **Create Admin Nav Menu**
+     1.   define protected route component (HOC?)
+     2.   define admin route component
+     3.   add menu for admin in header
+     4.   create dashboard screen component
+27.  **Create Dashboard Screen UI**
+     1.   create dashboard ui
+     2.   implement backend api
+     3.   connect ui to backend

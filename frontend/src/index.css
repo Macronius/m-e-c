@@ -24,7 +24,8 @@ main {
   background-color: #fcfcfc;
 }
 
-.btn-primary {
+.btn-primary,
+.btn-outline-primary {
   font-weight: bold;
   outline: none;
   border: none;
@@ -102,4 +103,54 @@ footer {
   color: var(--color-blue);
   /* border-bottom: 0.2rem solid #f08000;
   color: #f08000; */
+}
+
+
+/*sidebar*/
+.navbar-brand {
+  font-weight: bold;
+}
+
+.side-navbar {
+  width: 240px;
+  height: 100%;
+  position: absolute;
+  left: -300px;
+  /* background-color: #100901; */
+  /* background-color: #212529; */
+  /* background-color: #fcfcfc; */
+  /* box-shadow: 15rem 0 50px inset #fcfcfc; */
+  /* box-shadow: -1.125rem 0 7rem 10px inset #212529; */
+  box-shadow: -20px 0 20px -20px #212529 inset;
+  box-shadow: -16px 0 40px -20px #212529 inset;
+  transition: 0.5s;
+  z-index: 10;
+  padding: 3rem 6rem 3rem 3rem; 
+}
+
+/* .side-navbar:before,
+.side-navbar:after {
+  box-shadow: -20px 0 20px -20px #212529 inset;
+  content: " ";
+  height: 100%;
+  left: 220px;
+  position: absolute;
+  top: 0;
+  width: 20px;
+} */
+
+.site-container {
+  transition: 0.4s;
+}
+
+.active-cont {
+  margin-left: 240px;
+}
+
+.active-nav {
+  left: 0;
+}
+
+.text-bold {
+  font-weight: bold;
 }
