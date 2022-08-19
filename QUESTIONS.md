@@ -29,3 +29,12 @@ navigate( query ? `/search?query=${query}` : '/search');
 Is it mo correct to say...
 () => () returns implicitly, while
 () => {} can explicitly not return
+
+
+
+
+## QUESTION 4
+difference between isAdmin and isAuth?
+isAuth simply means signed in
+isAdmin means user has admin priviledge
+...a user could have admin priviledges, while not currently being signed in

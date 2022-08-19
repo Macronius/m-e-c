@@ -35,19 +35,15 @@ orderRouter.post(
   })
 );
 
-
-
-
-
 // ----- ----- summary - /api/order/summary - api endpoint  -  returns a summary report
 orderRouter.get(
   '/summary',
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    console.log("is expressAsyncHandler even getting run?");
+    // console.log("is expressAsyncHandler even getting run?");
     // --- backend code ? 
-    // ORDERS   -   returns: 
+    // ORDERS 
     const orders = await Order.aggregate([
       {
         $group: {
@@ -93,10 +89,6 @@ orderRouter.get(
   })
 );
 
-
-
-
-
 // ----- ----- mine orders -   /api/order /mine   - note: must be (lexically?) positioned before '/:id'
 orderRouter.get(
   '/mine',
@@ -108,10 +100,6 @@ orderRouter.get(
     res.send(orders);
   })
 );
-
-
-
-
 
 // ----- -----  post - /api/order /:id
 orderRouter.get(
@@ -129,10 +117,6 @@ orderRouter.get(
     }
   })
 );
-
-
-
-
 
 // ----- ----- paypal - /:id/pay - update order status after payment
 orderRouter.put(

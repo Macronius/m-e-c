@@ -60,3 +60,11 @@
      1.   create dashboard ui
      2.   implement backend api
      3.   connect ui to backend
+28.  **Manage Products Screen**
+     1.   create products list ui
+     2.   implement backend api
+     3.   fetch data
+29.  **Create Product**
+     1.   create 'create product' button
+     2.   implement backend api
+     3.   handle onClick

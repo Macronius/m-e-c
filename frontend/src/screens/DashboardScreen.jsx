@@ -8,7 +8,7 @@ import Chart from 'react-google-charts';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 //components - third party
-// import { Helmet } from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 //context
 import { Store } from '../store';
 //utility functions
@@ -36,18 +36,18 @@ export default function DashboardScreen() {
   //useReducer
   const [{ loading, summary, error }, dispatch] = useReducer(reducer, {
     loading: true,
-    error: '', //NOTE: by not acknowledging summary in initial state settings, it is defaulted as undefined
+    error: '',
+    //summary: by not acknowledging summary in initial state settings, it is defaulted as undefined
   });
   //get userInfo from state from store-context: required for authentication
   const { state } = useContext(Store);
   const { userInfo } = state;
-  //TESTING TESTING 123
-  // console.log('userInfo: ', userInfo); //QUESTION: why does this run 3 times?
+  
   // INITIALIZE - useEffect to ajax-request/fetch to get dashboard data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // dispatch({type: 'FETCH_REQUEST'});
+        dispatch({type: 'FETCH_REQUEST'});
         const { data } = await axios.get('/api/orders/summary', {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
@@ -62,9 +62,9 @@ export default function DashboardScreen() {
 
   return (
     <div>
-      {/* <Helmet>
+      <Helmet>
         <title>Admin Dashboard</title>
-      </Helmet> */}
+      </Helmet>
       <h1>Admin Dashboard</h1>
       {/* loading UX */}
       {loading ? (
