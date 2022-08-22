@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-//react router dom
+//routing
 import { BrowserRouter, Link, Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
 //ajax requests
 import axios from 'axios';
 //screen components
@@ -19,10 +21,9 @@ import SearchScreen from './screens/SearchScreen';
 import DashboardScreen from './screens/DashboardScreen'; //admin
 import ProductListScreen from './screens/ProductListScreen';
 import ProductEditScreen from './screens/ProductEditScreen';
+import OrderListScreen from './screens/OrderListScreen';
 //components
 import SearchBox from './components/SearchBox';
-import ProtectedRoute from './components/ProtectedRoute';
-import AdminRoute from './components/AdminRoute';
 //react-bootstrap
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -34,7 +35,7 @@ import Button from 'react-bootstrap/Button';
 import { LinkContainer } from 'react-router-bootstrap';
 //context
 import { Store } from './store';
-//toastify
+//UX
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 //utilities
@@ -219,12 +220,20 @@ function App() {
               ></Route>
               <Route path="/shipping" element={<ShippingAddressScreen />} />
               <Route path="/payment" element={<PaymentMethodScreen />} />
-              {/* ADMIN ROUTES */}
+{/* --- --- ---ADMIN ROUTES */}
               <Route
                 path="/admin/dashboard"
                 element={
                   <AdminRoute>
                     <DashboardScreen />
+                  </AdminRoute>
+                }
+              />
+              <Route 
+                path='/admin/orders'
+                element={
+                  <AdminRoute>
+                    <OrderListScreen />
                   </AdminRoute>
                 }
               />

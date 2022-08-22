@@ -13,6 +13,17 @@ const orderRouter = express.Router();
 
 //APIs
 
+//return all orders
+orderRouter.get(
+  '/',
+  isAuth, isAdmin,
+  expressAsyncHandler( async (req, res) => {
+    console.log("orderRouter.get('/'  req: ", req);
+    const orders = await Order.find().populate('user', 'name');
+    res.send(orders);
+  })
+);
+
 //root - /api/order
 orderRouter.post(
   '/',

@@ -82,3 +82,8 @@
           5.   implement backend api to upload, uploadRoutes.js
      7. delete product functionality
         1. show delete buton ProductEditScreen
+31.  **List Orders**
+     1.   create OrderListScreen
+          1.   NOTE: since only viewing data, not changing, no need to destructure the dispatch out from the store context, only state needed
+     2.   implement order backend api
+     3.   fetch and display orders

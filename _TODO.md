@@ -12,3 +12,9 @@
 
 
 ## iii.  each product card does not show a number of reviews value
+
+
+## iv.   increase the number of results on OrderListScreen... after development
+
+
+## v.   Order screen does not show payment PayPal & Stripe options

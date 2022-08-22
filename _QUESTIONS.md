@@ -38,3 +38,12 @@ difference between isAdmin and isAuth?
 isAuth simply means signed in
 isAdmin means user has admin priviledge
 ...a user could have admin priviledges, while not currently being signed in
+
+
+## QUESTION 5
+when to use axios in the backend and when not to?
+example:
+    I have a mongoose mongo model..
+    const order = await Order.find().populate('user', 'name')
+
+    How do I know I didn't need axios for this ^ ?
