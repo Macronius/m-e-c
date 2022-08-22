@@ -18,6 +18,7 @@ import OrderHistoryScreen from './screens/OrderHistoryScreen';
 import SearchScreen from './screens/SearchScreen';
 import DashboardScreen from './screens/DashboardScreen'; //admin
 import ProductListScreen from './screens/ProductListScreen';
+import ProductEditScreen from './screens/ProductEditScreen';
 //components
 import SearchBox from './components/SearchBox';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -232,6 +233,14 @@ function App() {
                 element={
                   <AdminRoute>
                     <ProductListScreen />
+                  </AdminRoute>
+                }
+              />
+              <Route 
+                path='/admin/product/:id'
+                element={
+                  <AdminRoute>
+                    <ProductEditScreen />
                   </AdminRoute>
                 }
               />

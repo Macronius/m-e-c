@@ -17,13 +17,14 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { getError } from '../utils';
 import { toast } from 'react-toastify';
+//
 
 // 1. define reducer to manage state of fetching products from backend
 const reducer = (state, action) => {
   switch (action.type) {
-    //fetches
+// --- fetch
     case 'FETCH_REQUEST':
-      return { ...state, loading: true};
+      return { ...state, loading: true };
     case 'FETCH_SUCCESS':
       return {
         ...state,
@@ -33,27 +34,36 @@ const reducer = (state, action) => {
         pages: action.payload.pages,
       };
     case 'FETCH_FAIL':
-      return { ...state, loading: false, error: action.payload};
-      //creates
-      case 'CREATE_REQUEST':
-        return { ...state, loadingCreate: true};
-      case 'CREATE_SUCCESS':
-        return { ...state, loadingCreate: false};
-      case 'CREATE_FAIL':
-        return { ...state, loadingCreate: false};   //QUESTION: what is the point of SUCCESS and FAIL being the same outcome?
+      return { ...state, loading: false, error: action.payload };
+// --- create
+    case 'CREATE_REQUEST':
+      return { ...state, loadingCreate: true };
+    case 'CREATE_SUCCESS':
+      return { ...state, loadingCreate: false };
+    case 'CREATE_FAIL':
+      return { ...state, loadingCreate: false }; //QUESTION: what is the point of SUCCESS and FAIL being the
+// --- delete
+    case 'DELETE_REQUEST':
+      return {...state, loadingDelete: true, successDelete: false};
+    case 'DELETE_SUCCESS':
+      return { ...state, loadingDelete: false, successDelete: true};
+    case 'DELETE_FAIL':
+      return {...state, loadingDelete: false, successDelete: false};
+    case 'DELETE_RESET':
+      return {...state, loadingDelete: false, successDelete: false};
+// --- default
     default:
       return state;
   }
   //QUESTION: because this is frontend to frontend, this means am not concerned with (res, req) ?
 };
 
+//
+// functional component
 export default function ProductListScreen() {
-    const navigate = useNavigate()
-
-  // test
-  // const location = useLocation();
-  // console.log('location: ', location);
+  const navigate = useNavigate();
   //
+
   // 4. get destination from url
   const { search } = useLocation();
   const search_parameter_object = new URLSearchParams(search);
@@ -65,22 +75,35 @@ export default function ProductListScreen() {
   const { userInfo } = state;
   //
 
-  // 2. define useReducer() inside the ProductListScreen
-  const [{ loading, products, pages, error, loadingCreate }, localDispatch] = useReducer(  //TODO: change 'localDispatch' to 'productDispatch'
-    reducer,
-    {
-      loading: true,
-      error: '',
-      //QUESTION: why is it good to be able to test multiple ways, undefined, or empty string, or null?  how can I be more strategic about the subtleties
-    }
-  );
+  // 2. define useReducer() - extract these values from the context-state
+  const [
+    { 
+      loading, 
+      products, 
+      pages, 
+      error, 
+      loadingCreate,
+      loadingDelete,
+      successDelete,
+    }, 
+    dispatch
+  ] =
+    useReducer(
+      //TODO: change 'dispatch' to 'productDispatch'
+      reducer,
+      {
+        loading: true,
+        error: '',
+        //QUESTION: why is it good to be able to test multiple ways, undefined, or empty string, or null?  how can I be more strategic about the subtleties
+      }
+    );
   //
 
   // 3. initialize with useEffect()
   useEffect(() => {
-    const fetchInitialData = async () => {
+    const fetchData = async () => {
       try {
-        localDispatch({ type: 'FETCH_REQUEST' });
+        dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(
           `/api/products/admin?page=${page}`, //because the page title is same as the page content, the api url can simply piggy-back off of current screen url
           {
@@ -89,40 +112,65 @@ export default function ProductListScreen() {
             },
           }
         );
-        localDispatch({ type: 'FETCH_SUCCESS', payload: data });
+        dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
-        localDispatch({ type: 'FETCH_FAIL', error: err });
+        dispatch({ type: 'FETCH_FAIL', error: err });
       }
     };
-    fetchInitialData();
-  }, [page, userInfo]); //if page changes or user changes
+    //
+    if (successDelete) {
+      dispatch({type: 'DELETE_RESET'});
+    }
+    else {
+      fetchData();
+    }
+  }, [page, userInfo, successDelete]); //if page changes or user changes
   //
 
   // 6. create product handler
   const createHandler = async () => {
     if (window.confirm('Are you sure you want to create a new product?')) {
-        try {
-            localDispatch({type: 'CREATE_REQUEST'});
-            const {data} = await axios.post(
-                '/api/products',
-                {},     //QUESTION: why empty object? answer?: to instantiate something to work with,
-                {
-                    headers: {Authorization: `Bearer ${userInfo.token}`},
-                }
-            );
-            toast.success('product created successfully');
-            localDispatch({type: 'CREATE_SUCCESS'});
-            navigate(`/admin/product/${data.product._id}`);     //QUESTION: what exactly is going on here?
-        }
-        catch (err) {
-            //UX
-            toast.error(getError(err));
-            //
-            localDispatch({type: 'CREATE_ERROR', error: err})
-        }
+      try {
+        dispatch({ type: 'CREATE_REQUEST' });
+        const { data } = await axios.post(
+          '/api/products',
+          {}, //QUESTION: why empty object? answer?: to instantiate something to work with,
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        );
+        toast.success('product created successfully');
+        dispatch({ type: 'CREATE_SUCCESS' });
+        navigate(`/admin/product/${data.product._id}`); //QUESTION: what exactly is going on here?
+      } catch (err) {
+        //UX
+        toast.error(getError(err));
+        //
+        dispatch({ type: 'CREATE_ERROR', error: err });
+      }
     }
   };
   //
+  // 7. delete product handler
+  const deleteHandler = async product => {
+    if (window.confirm('Are you sure you want to delete this item?  It cannot be undone.')) {
+      try {
+        dispatch({type: 'DELETE_REQUEST'});
+        await axios.delete(
+          `/api/products/${product._id}`,
+          {
+            headers: {Authorization: `Bearer ${userInfo.token}`},
+          }
+        );
+        toast.success('product deleted successfully');
+        dispatch({type: 'DELETE_SUCCESS'});
+      }
+      catch (err) {
+        toast.error(getError(err));
+        dispatch({type: 'DELETE_FAIL'})
+      }
+    }
+  };
 
   return (
     <div>
@@ -132,19 +180,20 @@ export default function ProductListScreen() {
 
       <Row>
         <Col>
-            <h1>Products</h1>
+          <h1>Products</h1>
         </Col>
         <Col className="col text-end">
-            <div>
-                <Button type="button" onClick={createHandler}>Create Product</Button>
-            </div>
+          <div>
+            <Button type="button" onClick={createHandler}>
+              Create Product
+            </Button>
+          </div>
         </Col>
       </Row>
 
-        {/* create */}
-      {
-        loadingCreate && <LoadingBox />
-      }
+      {/* check loading */}
+      {loadingCreate && <LoadingBox />};
+      {loadingDelete && <LoadingBox />};
 
       {loading ? (
         <LoadingBox />
@@ -155,21 +204,39 @@ export default function ProductListScreen() {
           <table className="table">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>NAME</th>
                 <th>PRICE</th>
                 <th>CATEGORY</th>
                 <th>BRAND</th>
+                <th>ACTIONS</th>
+                <th>ID</th>
               </tr>
             </thead>
             <tbody>
-              {products.map((x) => (
-                <tr key={x._id}>
-                  <td>{x._id}</td>
-                  <td>{x.name}</td>
-                  <td>${x.price.toFixed(2)}</td>
-                  <td>{x.category}</td>
-                  <td>{x.brand}</td>
+              {products.map((product) => (
+                <tr key={product._id}>
+                  <td>{product.name}</td>
+                  <td>${product.price.toFixed(2)}</td>
+                  <td>{product.category}</td>
+                  <td>{product.brand}</td>
+                  <td>
+                    <Button //redirect user to the ProductEditScreen
+                      type="button"
+                      variant="light"
+                      onClick={() => navigate(`/admin/product/${product._id}`)}
+                    >
+                      Edit
+                    </Button>
+                    &nbsp;&nbsp;
+                    <Button //redirect user to the ProductEditScreen
+                      type="button"
+                      variant="light"
+                      onClick={() => deleteHandler(product)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                  <td>{product._id}</td>
                 </tr>
               ))}
             </tbody>

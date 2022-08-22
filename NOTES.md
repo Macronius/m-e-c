@@ -68,3 +68,17 @@
      1.   create 'create product' button
      2.   implement backend api
      3.   handle onClick
+30.  **Update / Delete Product**
+     1.   create edit button
+     2.   create edit product UI
+     3.   display product info in the input boxes
+     4.   create edit product backend api
+     5.   ProductEditScreen Form onSubmit submitHandler
+     6.   upload photo functionality
+          1.   create cloudinary account
+          2.   store api key in .env file
+          3.   backend npm install cloudinary
+          4.   handle upload file
+          5.   implement backend api to upload, uploadRoutes.js
+     7. delete product functionality
+        1. show delete buton ProductEditScreen
