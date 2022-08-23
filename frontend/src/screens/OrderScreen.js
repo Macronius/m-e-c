@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
 //helmet
 import { Helmet } from 'react-helmet-async';
 //components
@@ -24,13 +25,14 @@ import { toast } from 'react-toastify';
 
 function reducer(state, action) {
   switch (action.type) {
+    // --- fetch
     case 'FETCH_REQUEST':
       return { ...state, loading: true, error: '' };
     case 'FETCH_SUCCESS':
       return { ...state, loading: false, order: action.payload, error: '' };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
-    //paypal
+    // --- pay - paypal
     case 'PAY_REQUEST':
       return { ...state, loadingPay: true };
     case 'PAY_SUCCESS':
@@ -39,6 +41,15 @@ function reducer(state, action) {
       return { ...state, loadingPay: false };
     case 'PAY_RESET':
       return { ...state, loadingPay: false, successPay: false };
+    // --- deliver
+    case 'DELIVER_REQUEST':
+      return { ...state, loadingDeliver: true };
+    case 'DELIVER_SUCCESS':
+      return { ...state, loadingDeliver: false, successDeliver: true };
+    case 'DELIVER_FAIL':
+      return { ...state, loadingDeliver: false }; //NOTE: toast will handle the message directly
+    case 'DELIVER_RESET':
+      return { ...state, loadingDeliver: false, successDeliver: false };
     default:
       return state;
   }
@@ -54,14 +65,26 @@ export default function OrderScreen() {
 
   const navigate = useNavigate();
 
-  const [{ loading, error, order, successPay, loadingPay }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      error: '',
-      order: {},
-      successPay: false,
-      loadingPay: false,
-    });
+  const [
+    {
+      loading,
+      error,
+      order,
+      loadingPay,
+      successPay,
+      loadingDeliver,
+      successDeliver,
+    },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    error: '',
+    order: {},
+    loadingPay: false,
+    successPay: false,
+    // loadingDeliver: false,
+    // successDeliver: false,
+  });
 
   //paypal reducer hook: isPending is state of loading a script; paypalDispatch is function to load their script
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
@@ -122,16 +145,27 @@ export default function OrderScreen() {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
     };
-
+    //
     if (!userInfo) {
       return navigate('/login');
       //   return navigate('/signin');
     }
-
-    if (!order._id || successPay || (order._id && order._id !== orderId)) {
+    //
+    if (
+      !order._id ||
+      successPay ||
+      successDeliver ||
+      (order._id && order._id !== orderId)
+    ) {
+      //fetch order
       fetchOrder();
+      //paid
       if (successPay) {
         dispatch({ type: 'PAY_RESET' });
+      }
+      //delivered
+      if (successDeliver) {
+        dispatch({ type: 'DELIVER_RESET' });
       }
     } else {
       const loadPayPalScript = async () => {
@@ -151,7 +185,36 @@ export default function OrderScreen() {
       };
       loadPayPalScript();
     }
-  }, [order, orderId, userInfo, navigate, paypalDispatch, successPay]);
+  }, [
+    order,
+    orderId,
+    userInfo,
+    navigate,
+    paypalDispatch,
+    successPay,
+    successDeliver,
+  ]);
+
+  //handler functions
+  async function deliverOrderHandler() {
+    // try ajax put(update) request
+    try {
+      dispatch({type: 'DELIVER_REQUEST'});
+      const {data} = await axios.put(
+        `/api/orders/${order._id}/deliver`,
+        {}, //NOTE: no payload
+        {
+          headers: {Authorization: `Bearer ${userInfo.token}`}
+        }
+      );
+      dispatch({type: 'DELIVER_SUCCESS', payload: data});
+      toast.success('Order has been delivered');
+    }
+    catch(err) {
+      toast.error(getError(err));
+      dispatch({type: 'DELIVER_FAIL'});
+    }
+  };
 
   return loading ? (
     <LoadingBox />
@@ -279,12 +342,24 @@ export default function OrderScreen() {
                     {loadingPay && <LoadingBox />}
                   </ListGroup.Item>
                 )}
+                {
+                  //deliver button
+                  userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                    <ListGroup.Item>
+                      {loadingDeliver && <LoadingBox />}
+                      <div className="d-grid">
+                        <Button type="button" onClick={deliverOrderHandler}>
+                          Deliver Order - confirm
+                        </Button>
+                      </div>
+                    </ListGroup.Item>
+                  )
+                }
               </ListGroup>
             </Card.Body>
           </Card>
         </Col>
       </Row>
-      
     </div>
   );
 }

@@ -87,3 +87,9 @@
           1.   NOTE: since only viewing data, not changing, no need to destructure the dispatch out from the store context, only state needed
      2.   implement order backend api
      3.   fetch and display orders
+32.  **add functionality - deliver order**
+     1.   add deliver button to OrderScreen for athenticated admin only
+     2.   onClick handler
+     3.   backend api for deliver
+33.  **delete order**
+     1.   implement delete-order functionality for authenticated admin only

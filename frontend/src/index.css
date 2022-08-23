@@ -42,6 +42,22 @@ main {
   color: black; */
 }
 
+.btn-subtle {
+  background-color: #efeffe;
+  box-shadow: 0.5px 0.5px 1.5px var(--color-dark-blue);
+  box-shadow: 1px 1px 1.5px var(--color-blue);
+  border-radius: 7px;
+  transform: translateY(-1px);
+  transition: transform 0.01s ease-in-out;
+}
+.btn-subtle:hover {
+  background-color: #efeffe;
+  color: var(--color-dark-blue);
+  box-shadow: 1px 1px 1.5px var(--color-blue);
+  box-shadow: 0.5px 0.5px 1.5px var(--color-dark-blue);
+  transform: translateY(0);
+}
+
 .products {
   display: flex;
   flex-wrap: wrap;

@@ -91,7 +91,7 @@ export default function OrderListScreen() {
                     <tbody>
                         {
                             orders.map( order => {
-                                console.log("order: ", order);
+                                // console.log("order: ", order);
                                 return (
                                     <tr key={order._id}>
                                         <td>{order._id}</td>
@@ -103,7 +103,8 @@ export default function OrderListScreen() {
                                         <td>
                                             <Button
                                                 type="button"
-                                                variant="light"
+                                                // variant="light"
+                                                className="btn-subtle"
                                                 onClick={ () => {
                                                     navigate(`/order/${order._id}`);
                                                 }}

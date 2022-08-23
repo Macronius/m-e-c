@@ -154,4 +154,24 @@ orderRouter.put(
   })
 );
 
+// ----- ----- delivery - /:id/deliver - update delivery status
+orderRouter.put(
+  '/:id/deliver',
+  isAuth,
+  expressAsyncHandler( async (req, res) => {
+    //get
+    const order = await Order.findById(req.params.id);
+    //do
+    if (order) {
+      order.isDelivered = true;
+      order.deliveredAt = Date.now();
+      await order.save();
+      res.send({message: 'Order Delivered (backend)'})
+    }
+    else {
+      res.status(404).send({message: 'Order not found'});
+    }
+  })
+)
+
 export default orderRouter;
