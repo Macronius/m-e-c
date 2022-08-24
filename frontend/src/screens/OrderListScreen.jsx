@@ -16,8 +16,6 @@ import { Helmet } from 'react-helmet-async';
 //react bootstrap
 import Button from 'react-bootstrap/Button';
 
-//experiementation
-console.log("React: ", React);
 
 //local reducer
 const reducer = (state, action) => {
@@ -42,7 +40,7 @@ export default function OrderListScreen() {
     const {userInfo} = state;
     //reducer
     const [{loading, orders, error}, dispatch] = useReducer(reducer, {loading: true, error: ''})
-    console.log("orders: ", orders);
+    // console.log("orders: ", orders);
     //rendering effect
     useEffect( () => {
         const fetchData  = async () => {

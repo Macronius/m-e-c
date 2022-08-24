@@ -47,7 +47,6 @@ const orderSchema = new mongoose.Schema(
 );
 //NOTE: products has a unique id and references the productModel
 
-
 const Order = mongoose.model('Order', orderSchema);
 
 export default Order;

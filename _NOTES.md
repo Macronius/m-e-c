@@ -93,3 +93,15 @@
      3.   backend api for deliver
 33.  **delete order**
      1.   implement delete-order functionality for authenticated admin only
+34.  **list and edit users**
+     1.   user list screen
+     2.   backend api
+     3.   fetch and display users
+     4.   edit button
+     5.   edit ui ui
+     6.   display user info in the input boxes
+     7.   implement backend api
+     8.   onclick handler
+     9.   add delete button
+     10.  onclick handler
+     11.  implement backend api

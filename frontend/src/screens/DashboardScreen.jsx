@@ -107,12 +107,15 @@ export default function DashboardScreen() {
             <Col md={4}>
               <Card>
                 <Card.Body>
+                  <Card.Header>
                   <Card.Title>
-                    $
-                    {summary.orders && summary.users[0]
-                      ? summary.orders[0].totalSales.toFixed(2)
-                      : 0}
-                  </Card.Title>{' '}
+                      $
+                      {summary.orders && summary.users[0]
+                        ? summary.orders[0].totalSales.toFixed(2)
+                        : 0}
+                    </Card.Title>
+                  </Card.Header>
+                    {' '}
                   {/*QUESTION: summary.orders[i].numUsers  where is 'summary' made available?*/}
                   <Card.Text> Total Sales</Card.Text>
                 </Card.Body>

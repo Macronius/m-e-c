@@ -17,3 +17,6 @@
 
 
 ## v.   Order screen does not show payment PayPal & Stripe options
+
+
+## vi.  style the bootstrap

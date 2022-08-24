@@ -82,8 +82,6 @@ export default function OrderScreen() {
     order: {},
     loadingPay: false,
     successPay: false,
-    // loadingDeliver: false,
-    // successDeliver: false,
   });
 
   //paypal reducer hook: isPending is state of loading a script; paypalDispatch is function to load their script

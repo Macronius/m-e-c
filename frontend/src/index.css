@@ -42,21 +42,50 @@ main {
   color: black; */
 }
 
+
+
+
+
+/* BUTTon STUFF */
 .btn-subtle {
   background-color: #efeffe;
-  box-shadow: 0.5px 0.5px 1.5px var(--color-dark-blue);
+  /* box-shadow: 0.5px 0.5px 1.5px var(--color-dark-blue); */
   box-shadow: 1px 1px 1.5px var(--color-blue);
-  border-radius: 7px;
-  transform: translateY(-1px);
-  transition: transform 0.01s ease-in-out;
+  /* box-shadow: 0.5px 1.5px var(--color-dark-blue); */
+  border-radius: 3px;
+  /* transform: translateY(-1px); */
+  /* transition: transform 0.01s ease-in-out; */
+  
 }
 .btn-subtle:hover {
   background-color: #efeffe;
   color: var(--color-dark-blue);
-  box-shadow: 1px 1px 1.5px var(--color-blue);
-  box-shadow: 0.5px 0.5px 1.5px var(--color-dark-blue);
-  transform: translateY(0);
+  /* box-shadow: 1px 1px 1.5px var(--color-blue); */
+  /* box-shadow: 0.5px 1.5px var(--color-dark-blue); */
+  /* transform: translateY(1px); */
+  /* transform: translateX(0.5px); */
+  background-color: #f8f9fa;
+  border: none;
 }
+
+.btn-border-topleft {
+  /* border-top: 2px solid white; */
+  /* border-left: 2px solid white; */
+  box-sizing: border-box;
+}
+.btn-border-topleft:hover {
+  box-shadow: 0 0 15px inset #d2acac25;
+  background-color: #f8f9fa;
+  border: none;
+  border-top: 1px solid white;
+  border-left: 1px solid white;
+}
+
+
+
+
+
+
 
 .products {
   display: flex;

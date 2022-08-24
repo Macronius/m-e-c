@@ -7,12 +7,81 @@ import bcrypt from 'bcryptjs';
 //models
 import User from '../models/userModel.js';
 //utils
-import { generateToken, isAuth } from '../utils.js';
+import { generateToken, isAuth, isAdmin } from '../utils.js';
 
 const userRouter = express.Router();
 
-//catch the error in the async function and handle in server.js
-//sign in api
+// /api/users/
+userRouter.get(
+  '/',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler( async (req, res) => {
+    const users = await User.find({});  // get all users
+    res.send(users);  // send users to frontend
+  })
+);
+
+// /api/users/:id
+userRouter.get(
+  '/:id',
+  isAuth, 
+  isAdmin,
+  expressAsyncHandler( async (req, res) => {
+    console.log("req from /api/users/:id", req);
+    console.log("res from /api/users/:id", res);
+    //get current user from database
+    const user = await User.findById(req.params.id); //QUESTION: how did id-payload get there?
+    if (user) {
+      res.send(user);
+    }
+    else {
+      res.status(404).send({message: "User not found"});
+    }
+  })
+)
+// /api/users/:id - update
+userRouter.put(
+  '/:id',
+  isAuth, 
+  isAdmin,
+  expressAsyncHandler( async (req, res) => {
+    //get user from database
+    const user = await User.findById(req.params.id); //select a working instance of user
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      user.isAdmin = Boolean(req.body.isAdmin);
+      const updatedUser = await user.save();
+      res.send({message: 'User Updated', user: updatedUser});
+    }
+    else {
+      res.status(404).send({message: "User not found"});
+    }
+  })
+)
+// /api/users/:id - delete
+userRouter.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler( async (req, res) => {
+    const user = await User.findById(req.params.id);
+    console.log("user: ", user);
+    if (user) {
+      if (user.email === 'user@email.com') {
+        res.status(400).send({message: 'Cannot delete an admin user'});
+        return;
+      }
+      await user.remove();
+      res.send({message: 'User successfully deleted'});
+    } else {
+      res.status(404).send({message: "User not found"});
+    }
+  })
+);
+
+// /api/users/signin
 userRouter.post(
   '/signin',
   expressAsyncHandler(async (req, res) => {
@@ -21,16 +90,15 @@ userRouter.post(
     if (user) {
       //check password
       if (bcrypt.compareSync(req.body.password, user.password)) {
-        //send all user information
+        
         res.send({
           _id: user._id,
           name: user.name,
           email: user.email,
           isAdmin: user.isAdmin,
           token: generateToken(user),
-        });
-        //no reason to continue running the code after sending user data
-        return;
+        }); //send all user information
+        return; //no reason to continue running the code after sending user data
       }
     }
     res
@@ -39,11 +107,11 @@ userRouter.post(
   })
 );
 
-//sign up api
+// /api/users/signup
 userRouter.post(
   '/signup',
   expressAsyncHandler(async (req, res) => {
-    console.log('req from sign-up: ', req);
+    // console.log('req from sign-up: ', req);
     //instantiate a new User from the mongoose user model
     const newUser = new User({
       name: req.body.name,
@@ -52,7 +120,7 @@ userRouter.post(
     });
     //save user to database QUESTION: where did .save() come from? Mongo? Mongoose?
     const user = await newUser.save();
-    //response
+    //send user information to frontend
     res.send({
       _id: user._id,
       name: user.name,
@@ -63,6 +131,7 @@ userRouter.post(
   })
 );
 
+// /api/users/profile
 userRouter.put(
   '/profile',
   isAuth,

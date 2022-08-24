@@ -47,3 +47,7 @@ example:
     const order = await Order.find().populate('user', 'name')
 
     How do I know I didn't need axios for this ^ ?
+
+
+## QUESTION 6
+why do some screens require useState?  Do similar screens have a common form feature?  require state to have controlled inputs.

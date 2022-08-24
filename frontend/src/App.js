@@ -22,6 +22,8 @@ import DashboardScreen from './screens/DashboardScreen'; //admin
 import ProductListScreen from './screens/ProductListScreen';
 import ProductEditScreen from './screens/ProductEditScreen';
 import OrderListScreen from './screens/OrderListScreen';
+import UserListScreen from './screens/UserListScreen';
+import UserEditScreen from './screens/UserEditScreen';
 //components
 import SearchBox from './components/SearchBox';
 //react-bootstrap
@@ -220,7 +222,9 @@ function App() {
               ></Route>
               <Route path="/shipping" element={<ShippingAddressScreen />} />
               <Route path="/payment" element={<PaymentMethodScreen />} />
-{/* --- --- ---ADMIN ROUTES */}
+
+{/* --- --- - ADMIN ROUTES */}
+              {/* --- --- dashboard */}
               <Route
                 path="/admin/dashboard"
                 element={
@@ -229,6 +233,7 @@ function App() {
                   </AdminRoute>
                 }
               />
+              {/* --- --- orders */}
               <Route 
                 path='/admin/orders'
                 element={
@@ -237,6 +242,25 @@ function App() {
                   </AdminRoute>
                 }
               />
+              {/* --- --- users */}
+              <Route 
+                path='/admin/users'
+                element={
+                  <AdminRoute>
+                    <UserListScreen />
+                  </AdminRoute>
+                }
+              />
+              {/* --- --- user */}
+              <Route 
+                path='/admin/user/:id'
+                element={
+                  <AdminRoute>
+                    <UserEditScreen />
+                  </AdminRoute>
+                }
+              />
+              {/* --- --- products */}
               <Route 
                 path='/admin/products'
                 element={
@@ -245,6 +269,7 @@ function App() {
                   </AdminRoute>
                 }
               />
+              {/* --- --- product */}
               <Route 
                 path='/admin/product/:id'
                 element={
@@ -253,7 +278,8 @@ function App() {
                   </AdminRoute>
                 }
               />
-              {/* HOME ROUTE */}
+              
+{/* --- --- - HOME ROUTE */}
               <Route path="/" element={<HomeScreen />} />
             </Routes>
           </Container>
