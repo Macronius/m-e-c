@@ -39,9 +39,6 @@ export default function DashboardScreen() {
     error: '',
     //summary: by not acknowledging summary in initial state settings, it is defaulted as undefined
   });
-
-
-
   //get userInfo from state from store-context: required for authentication
   const { state } = useContext(Store);
   console.log("state: ", state);
@@ -63,18 +60,6 @@ export default function DashboardScreen() {
     };
     fetchData();
   }, [userInfo]);
-  console.log("userInfo: ", userInfo);
-  console.log("cart: ", cart);
-
-
-  //REPORT:
-  // console.log(`localReducer: loading, error, summary: ${loading}, ${error}, ${summary}`);
-  console.log(`--- --- --- localReducer:`);
-  console.log("loading: ", loading);
-  console.log("error: ", error);
-  console.log("summary: ", summary);
-  console.log(' --- --- --- storeContext:');
-  // console.log("state: ", state);
   console.log("userInfo: ", userInfo);
   console.log("cart: ", cart);
 

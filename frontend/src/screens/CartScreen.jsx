@@ -21,7 +21,7 @@ import Card from 'react-bootstrap/Card';
 
 export default function CartScreen() {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { state, dispatch: contextDispatch } = useContext(Store);
   const {
@@ -29,15 +29,16 @@ export default function CartScreen() {
   } = state;
 
   // +/-button handler
-  const updateCartHandler = async (item,quantity) => {
+  const updateCartHandler = async (item, quantity) => {
 
     //logic to determine if should proceed
-    const result = await axios.get(`/api/products/${item._id}`);
-    const {data} = result;
+    // const {data} = await axios.get(`/api/products/${item._id}`);
+    const {data: countInStock} = await axios.get(`/api/products/${item._id}`);
 
-    if (data.countInStock < quantity) {
+    // if (data.countInStock < quantity) {
+    if (countInStock < quantity) {
         //if consumer requests more than in inventory
-        window.alert("Sorry, we have not enough minerals");
+        window.alert("We have not enough minerals");
         return;
     }
     contextDispatch({
